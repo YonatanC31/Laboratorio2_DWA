@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#2563eb" />
+    <meta name="description" content="Busca países por nombre y filtra por región. Consulta su bandera, población y capital." />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="/src/style.css" />
+    <title>Explorer App | Países</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#explorar">Saltar al contenido</a>
+    <header class="site-header">
+      <div class="shell header-inner">
+        <a class="brand" href="./" aria-label="Explorer App, inicio">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" width="26" height="26"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18"/></svg>
+          <span class="text-primary">Explorer App</span>
+        </a>
+        <span class="header-caption">Países del mundo</span>
+      </div>
+    </header>
+    <main id="explorar" class="shell main-content">
+      <div class="page-heading">
+        <h1>Explora los países</h1>
+        <p>Busca por nombre o selecciona una región.</p>
+      </div>
+      <form id="filters" class="filters" role="search" autocomplete="off">
+        <div class="filter-field">
+          <label for="search">Buscar país</label>
+          <div class="search-control">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" width="20" height="20"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg>
+            <input id="search" type="search" placeholder="Escribe el nombre de un país" />
+          </div>
+        </div>
+        <div class="filter-field region-field">
+          <label for="region">Región</label>
+          <select id="region">
+            <option value="">Todas las regiones</option>
+            <option value="Africa">África</option>
+            <option value="Americas">América</option>
+            <option value="Asia">Asia</option>
+            <option value="Europe">Europa</option>
+            <option value="Oceania">Oceanía</option>
+            <option value="Antarctic">Antártida</option>
+          </select>
+        </div>
+      </form>
+      <p id="results-count" class="results-count" role="status" aria-live="polite">Cargando países…</p>
+      <section id="countries" aria-label="Listado de países" aria-busy="true"></section>
+      <nav id="pagination" class="pagination" aria-label="Páginas de países" hidden></nav>
+    </main>
+    <footer class="site-footer shell">Explorer App · Información de países</footer>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
