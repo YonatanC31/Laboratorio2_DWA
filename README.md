@@ -6,18 +6,18 @@ Incluye búsqueda por nombre, filtro por región, debounce de 300 ms y estados d
 
 ## Instalación y ejecución
 
-Requisitos: Git, npm y Node.js 22.12 o una versión compatible de las ramas 24 o 26. Después de publicar la rama de entrega, puedes clonarla así:
+Requisitos: Git, npm 10 o superior y Node.js 22.12 o una versión compatible de las ramas 24 o 26. La versión de referencia está indicada en `.nvmrc`. El proyecto completo está en `main`:
 
 ```bash
-git clone --branch entrega-vanilla-ts https://github.com/YonatanC31/Laboratorio2_DWA.git
+git clone https://github.com/YonatanC31/Laboratorio2_DWA.git
 cd Laboratorio2_DWA
 npm ci
 npm run dev
 ```
 
-Abre la dirección que muestra Vite, normalmente `http://127.0.0.1:5173/`. **No abras `index.html` con doble clic:** este proyecto requiere el servidor para cargar TypeScript, los estilos y los datos.
+Abre la dirección que muestra Vite, normalmente `http://127.0.0.1:5173/`. Mantén la terminal abierta mientras revisas la aplicación. Si ese puerto está ocupado, Vite mostrará otro. **No abras `index.html` con doble clic:** este proyecto requiere el servidor para cargar TypeScript, los estilos y los datos.
 
-Si ya descargaste el proyecto, ejecuta los comandos a partir de `npm ci` desde su carpeta.
+Si descargaste el ZIP desde GitHub, extráelo y abre una terminal en la carpeta que contiene `package.json`; ejecuta los comandos a partir de `npm ci`. Las dependencias se instalan desde `package-lock.json`. No se necesitan archivos privados ni variables de entorno para ejecutar la versión incluida.
 
 ```bash
 npm test          # Pruebas automatizadas
@@ -36,6 +36,7 @@ src/
   main.ts    Carga inicial y coordinación de los eventos.
   style.css  Tailwind CSS v4 y diseño adaptable.
 public/data/ Datos locales y licencia de la fuente.
+public/flags/ Banderas SVG incluidas en el proyecto.
 tests/       Pruebas de la petición, filtros, debounce e interfaz.
 ```
 
@@ -43,7 +44,9 @@ tests/       Pruebas de la petición, filtros, debounce e interfaz.
 
 Se utiliza una copia local de [REST Countries v3.1](https://github.com/restcountries/restcountries/blob/bfadee4f951682c29970e53677707bc558e80b74/src/main/resources/countriesV3.1.json), reducida a los campos utilizados. El archivo `public/data/countries.json` contiene 250 países y territorios y se obtiene mediante `fetch`. No se requiere clave de API. No es el archivo proporcionado por la docente.
 
-Se eligió el JSON local porque [el endpoint público v3.1 fue retirado](https://restcountries.com/docs/countries/legacy-api-deprecation). Las poblaciones corresponden a esa copia del dataset. Las imágenes de las banderas proceden de las URL de FlagCDN incluidas en los datos; si una imagen falla, se muestra un texto alternativo. Se conserva la licencia Mozilla Public License 2.0 en `public/data/LICENSE.txt`.
+Se eligió el JSON local porque [el endpoint público v3.1 fue retirado](https://restcountries.com/docs/countries/legacy-api-deprecation). Las poblaciones corresponden a esa copia del dataset. Las 250 banderas SVG se incluyen en `public/flags/`, obtenidas de las URL originales de FlagCDN y Wikimedia indicadas por REST Countries. Si una imagen falta, se muestra un texto alternativo. Se conserva la licencia Mozilla Public License 2.0 de los datos en `public/data/LICENSE.txt`.
+
+La versión incluida no consulta servicios externos durante el uso: tanto el JSON como las banderas se sirven desde el proyecto. Solo se requiere conexión a Internet para descargar el repositorio e instalar las dependencias.
 
 La función `fetchCountries(): Promise<Country[]>` comprueba `response.ok`, recibe el JSON como `unknown` y valida los campos antes de usarlos. Los campos ausentes o `null` muestran «No disponible». Una lista vacía y una petición fallida tienen estados diferentes.
 
@@ -62,12 +65,15 @@ Para cambiar la fuente, copia `.env.example` a `.env.local`, define `VITE_COUNTR
 ## Versión Vanilla TypeScript
 
 - Repositorio: [YonatanC31/Laboratorio2_DWA](https://github.com/YonatanC31/Laboratorio2_DWA).
-- Rama de entrega: [`entrega-vanilla-ts`](https://github.com/YonatanC31/Laboratorio2_DWA/tree/entrega-vanilla-ts).
+- Rama principal con el proyecto completo: [`main`](https://github.com/YonatanC31/Laboratorio2_DWA/tree/main).
+- Versión fija de entrega: [`vanilla-typescript-v1.0.0`](https://github.com/YonatanC31/Laboratorio2_DWA/tree/vanilla-typescript-v1.0.0).
 
-Los cambios nuevos siguen Conventional Commits: `feat:`, `fix:`, `refactor:` y `docs:`. La rama conserva la versión Vanilla TypeScript de esta actividad.
+Los cambios nuevos siguen Conventional Commits: `feat:`, `fix:`, `refactor:` y `docs:`. La etiqueta conserva exactamente la versión Vanilla TypeScript de esta actividad, aunque `main` cambie después.
 
-Para publicar la rama local en el repositorio:
+Para ejecutar la versión fija después de clonar el repositorio:
 
 ```bash
-git push -u origin entrega-vanilla-ts
+git switch --detach vanilla-typescript-v1.0.0
+npm ci
+npm run dev
 ```

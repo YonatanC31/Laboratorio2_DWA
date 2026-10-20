@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { fetchCountries, parseCountries } from '../src/api/countries';
 import type { Country } from '../src/types/country';
 import { debounce } from '../src/utils/debounce';
@@ -18,6 +18,15 @@ describe('validación y petición', () => {
   it('valida los 250 países del archivo entregado', () => {
     const json: unknown = JSON.parse(readFileSync('public/data/countries.json', 'utf8'));
     expect(parseCountries(json)).toHaveLength(250);
+  });
+  it('incluye las banderas de todos los países sin depender de servidores externos', () => {
+    const countries = parseCountries(JSON.parse(readFileSync('public/data/countries.json', 'utf8')));
+    for (const country of countries) {
+      expect(country.flags?.svg).toMatch(/^flags\/[a-z]{3}\.svg$/);
+      const file = `public/${country.flags?.svg}`;
+      expect(existsSync(file), `Falta la bandera de ${country.name.common}`).toBe(true);
+      expect(readFileSync(file, 'utf8')).toMatch(/<svg[\s>]/i);
+    }
   });
   it('acepta campos ausentes y null, pero rechaza estructuras inválidas', () => {
     expect(parseCountries([{ name: { common: 'Prueba' }, cca3: 'TST', population: null, capital: null, flags: null, region: null }])).toHaveLength(1);
