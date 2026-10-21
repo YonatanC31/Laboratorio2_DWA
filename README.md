@@ -16,9 +16,9 @@ npm ci
 npm run dev
 ```
 
-Abra la dirección que muestra Vite, normalmente `http://127.0.0.1:5173/`. Mantén la terminal abierta mientras revisas la aplicación. Si ese puerto está ocupado, Vite mostrará otro. **No abras `index.html` con doble clic:** este proyecto requiere el servidor para cargar TypeScript, los estilos y los datos.
+Abra la dirección que muestra Vite, normalmente `http://127.0.0.1:5173/`. Mantenga la terminal abierta mientras revisa la aplicación. Si ese puerto está ocupado, Vite mostrará otro. **No abra `index.html` con doble clic:** este proyecto requiere el servidor para cargar TypeScript, los estilos y los datos.
 
-Si descargo el ZIP desde GitHub, extráelo y abre una terminal en la carpeta que contiene `package.json`; ejecuta los comandos a partir de `npm ci`. Las dependencias se instalan desde `package-lock.json`. No se necesitan archivos privados ni variables de entorno para ejecutar.
+Si descargó el ZIP desde GitHub, extráigalo y abra una terminal en la carpeta que contiene `package.json`; ejecute los comandos a partir de `npm ci`. Las dependencias se instalan desde `package-lock.json`. No se necesitan archivos privados ni variables de entorno para ejecutar.
 
 ```bash
 npm test          # Pruebas automatizadas
@@ -51,5 +51,30 @@ La versión incluida no consulta servicios externos durante el uso: tanto el JSO
 
 La función `fetchCountries(): Promise<Country[]>` comprueba `response.ok`, recibe el JSON como `unknown` y valida los campos antes de usarlos. Los campos ausentes o `null` muestran «No disponible». Una lista vacía y una petición fallida tienen estados diferentes.
 
-Para cambiar la fuente, copia `.env.example` a `.env.local`, define `VITE_COUNTRIES_URL` y reinicia Vite. La URL debe devolver un array con la estructura de `Country` y permitir CORS si pertenece a otro origen. La API v5 tiene una estructura diferente y no es compatible directamente.
+Para cambiar la fuente, copie `.env.example` a `.env.local`, defina `VITE_COUNTRIES_URL` y reinicie Vite. La URL debe devolver un array con la estructura de `Country` y permitir CORS si pertenece a otro origen. La API v5 tiene una estructura diferente y no es compatible directamente.
 
+## Comprobar el funcionamiento
+
+1. **Búsqueda:** escriba `japon` o `JAPAN`. Se muestra Japón tras 300 ms sin nuevas pulsaciones; no distingue mayúsculas ni acentos.
+2. **Filtros combinados:** busque `Japan` y seleccione Europa: no hay coincidencias. Al seleccionar Asia, aparece Japón. Borrar la búsqueda conserva la región; elegir «Todas las regiones» conserva el texto.
+3. **Paginación:** recorra el listado con «Anterior» y «Siguiente». Cada página muestra como máximo 8 países. Cambiar la búsqueda o región vuelve a la primera página.
+4. **Carga:** active una conexión lenta desde las herramientas del navegador y recargue para ver el skeleton y el mensaje de carga.
+5. **Vacío:** busque `zzzz`. El botón «Restablecer filtros» limpia la búsqueda y la región.
+6. **Error:** bloquee `countries.json` en las herramientas del navegador y recargue. Aparecen el error y «Volver a intentar». Desbloquee la petición y pulse el botón para recuperar los datos.
+7. **Diseño adaptable:** revise el listado en móvil y escritorio. Los controles tienen etiquetas y pueden utilizarse con el teclado.
+
+## Versión Vanilla TypeScript
+
+- Repositorio: [YonatanC31/Laboratorio2_DWA](https://github.com/YonatanC31/Laboratorio2_DWA).
+- Rama principal con el proyecto completo: [`main`](https://github.com/YonatanC31/Laboratorio2_DWA/tree/main).
+- Versión fija de entrega: [`vanilla-typescript-v1.0.0`](https://github.com/YonatanC31/Laboratorio2_DWA/tree/vanilla-typescript-v1.0.0).
+
+Los cambios nuevos siguen Conventional Commits: `feat:`, `fix:`, `refactor:` y `docs:`. La etiqueta conserva exactamente la versión Vanilla TypeScript de esta actividad, aunque `main` cambie después.
+
+Para ejecutar la versión fija después de clonar el repositorio:
+
+```bash
+git switch --detach vanilla-typescript-v1.0.0
+npm ci
+npm run dev
+```
