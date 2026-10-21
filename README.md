@@ -1,6 +1,7 @@
-# Explorer App
+# Explorer App - Yonatan Chicas
 
-Aplicación Vanilla TypeScript para consultar países mediante tarjetas con nombre, bandera, población, región y capital. Utiliza Vite y Tailwind CSS v4.
+Hecha con TypeScript para consultar países mediante tarjetas con nombre, bandera, población, región y capital.
+Vite y Tailwind CSS v4.
 
 Incluye búsqueda por nombre, filtro por región, debounce de 300 ms y estados de carga, vacío y error. Se muestran **8 países por página** para mantener el listado manejable. La búsqueda y el filtro se aplican sobre todos los países cargados, antes de paginar.
 
@@ -15,9 +16,9 @@ npm ci
 npm run dev
 ```
 
-Abre la dirección que muestra Vite, normalmente `http://127.0.0.1:5173/`. Mantén la terminal abierta mientras revisas la aplicación. Si ese puerto está ocupado, Vite mostrará otro. **No abras `index.html` con doble clic:** este proyecto requiere el servidor para cargar TypeScript, los estilos y los datos.
+Abra la dirección que muestra Vite, normalmente `http://127.0.0.1:5173/`. Mantén la terminal abierta mientras revisas la aplicación. Si ese puerto está ocupado, Vite mostrará otro. **No abras `index.html` con doble clic:** este proyecto requiere el servidor para cargar TypeScript, los estilos y los datos.
 
-Si descargaste el ZIP desde GitHub, extráelo y abre una terminal en la carpeta que contiene `package.json`; ejecuta los comandos a partir de `npm ci`. Las dependencias se instalan desde `package-lock.json`. No se necesitan archivos privados ni variables de entorno para ejecutar la versión incluida.
+Si descargo el ZIP desde GitHub, extráelo y abre una terminal en la carpeta que contiene `package.json`; ejecuta los comandos a partir de `npm ci`. Las dependencias se instalan desde `package-lock.json`. No se necesitan archivos privados ni variables de entorno para ejecutar.
 
 ```bash
 npm test          # Pruebas automatizadas
@@ -52,28 +53,3 @@ La función `fetchCountries(): Promise<Country[]>` comprueba `response.ok`, reci
 
 Para cambiar la fuente, copia `.env.example` a `.env.local`, define `VITE_COUNTRIES_URL` y reinicia Vite. La URL debe devolver un array con la estructura de `Country` y permitir CORS si pertenece a otro origen. La API v5 tiene una estructura diferente y no es compatible directamente.
 
-## Comprobar el funcionamiento
-
-1. **Búsqueda:** escribe `japon` o `JAPAN`. Se muestra Japón tras 300 ms sin nuevas pulsaciones; no distingue mayúsculas ni acentos.
-2. **Filtros combinados:** busca `Japan` y selecciona Europa: no hay coincidencias. Al seleccionar Asia, aparece Japón. Borrar la búsqueda conserva la región; elegir «Todas las regiones» conserva el texto.
-3. **Paginación:** recorre el listado con «Anterior» y «Siguiente». Cada página muestra como máximo 8 países. Cambiar la búsqueda o región vuelve a la primera página.
-4. **Carga:** activa una conexión lenta desde las herramientas del navegador y recarga para ver el skeleton y el mensaje de carga.
-5. **Vacío:** busca `zzzz`. El botón «Restablecer filtros» limpia la búsqueda y la región.
-6. **Error:** bloquea `countries.json` en las herramientas del navegador y recarga. Aparecen el error y «Volver a intentar». Desbloquea la petición y pulsa el botón para recuperar los datos.
-7. **Diseño adaptable:** revisa el listado en móvil y escritorio. Los controles tienen etiquetas y pueden utilizarse con el teclado.
-
-## Versión Vanilla TypeScript
-
-- Repositorio: [YonatanC31/Laboratorio2_DWA](https://github.com/YonatanC31/Laboratorio2_DWA).
-- Rama principal con el proyecto completo: [`main`](https://github.com/YonatanC31/Laboratorio2_DWA/tree/main).
-- Versión fija de entrega: [`vanilla-typescript-v1.0.0`](https://github.com/YonatanC31/Laboratorio2_DWA/tree/vanilla-typescript-v1.0.0).
-
-Los cambios nuevos siguen Conventional Commits: `feat:`, `fix:`, `refactor:` y `docs:`. La etiqueta conserva exactamente la versión Vanilla TypeScript de esta actividad, aunque `main` cambie después.
-
-Para ejecutar la versión fija después de clonar el repositorio:
-
-```bash
-git switch --detach vanilla-typescript-v1.0.0
-npm ci
-npm run dev
-```
