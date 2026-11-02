@@ -8,7 +8,14 @@ Incluye búsqueda inmediata por nombre, filtro por región combinado, mensaje si
 
 Requisitos: Node.js 22.12 o una versión compatible de las ramas 24 o 26, pnpm y Git. La referencia de Node está en `.nvmrc`; `package.json` indica `pnpm@11.25.0` y `pnpm-lock.yaml` fija las dependencias.
 
-Abra una terminal en la carpeta independiente `explorer-react`, donde está su `package.json`:
+Clone el repositorio independiente y entre en su carpeta:
+
+```bash
+git clone https://github.com/YonatanC31/explorer-react.git
+cd explorer-react
+```
+
+Desde esa carpeta, donde está `package.json`, ejecute:
 
 ```bash
 node -v
@@ -132,8 +139,19 @@ Vista de escritorio, con el modo oscuro automático activo:
 
 La fecha indicada en la actividad es el **4 de noviembre de 2026**. Debe entregar el enlace de su repositorio y un video de 3 a 5 minutos con escritorio, móvil, filtros combinados, menú, estado y callbacks. El guion y las capturas no sustituyen ese video.
 
-## Publicación independiente
+## Repositorio y rama de entrega
 
-La carpeta local de este proyecto se llama `explorer-react` y está fuera de la carpeta de Vanilla TypeScript, como indica S24. El repositorio público independiente debe crearse con ese mismo nombre. Su creación sigue pendiente; la conexión de publicación permite trabajar con repositorios existentes.
+- Repositorio público independiente: [YonatanC31/explorer-react](https://github.com/YonatanC31/explorer-react).
+- Código completo en [`main`](https://github.com/YonatanC31/explorer-react/tree/main).
+- Rama del avance de S24–S27: [`entrega-s24-s27`](https://github.com/YonatanC31/explorer-react/tree/entrega-s24-s27).
 
-Mientras se completa ese paso, la copia del avance permanece en [Laboratorio2_DWA/explorer-react](https://github.com/YonatanC31/Laboratorio2_DWA/tree/main/explorer-react). La entrega Vanilla se conserva por separado en su etiqueta `vanilla-typescript-v1.0.0`.
+La carpeta local y el repositorio React son independientes del proyecto anterior, como indica S24. La [entrega Vanilla TypeScript](https://github.com/YonatanC31/Laboratorio2_DWA/tree/vanilla-typescript-v1.0.0) se conserva en su propio repositorio.
+
+Para consultar y ejecutar la rama del avance:
+
+```bash
+git clone --branch entrega-s24-s27 https://github.com/YonatanC31/explorer-react.git
+cd explorer-react
+pnpm install --frozen-lockfile
+pnpm run dev
+```

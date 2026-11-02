@@ -1,6 +1,6 @@
 # Explorer App - Yonatan Chicas
 
-> **Parcial React (S24–S27):** el proyecto está en [`explorer-react`](./explorer-react/README.md). Para ejecutarlo, abra una terminal en esa carpeta y utilice `npm ci` y `npm run dev`. La aplicación de la raíz corresponde a la entrega Vanilla TypeScript anterior.
+> **Parcial React (S24–S27):** el proyecto está en el repositorio independiente [`YonatanC31/explorer-react`](https://github.com/YonatanC31/explorer-react). Sus instrucciones utilizan pnpm. La aplicación de la raíz de este repositorio corresponde a la entrega Vanilla TypeScript anterior.
 
 Hecha con TypeScript para consultar países mediante tarjetas con nombre, bandera, población, región y capital.
 Vite y Tailwind CSS v4.
