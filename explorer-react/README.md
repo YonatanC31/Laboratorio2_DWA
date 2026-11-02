@@ -19,6 +19,8 @@ Si descargó el ZIP, extráigalo y abra una terminal en la carpeta `explorer-rea
 
 Abra la dirección que muestre Vite, normalmente `http://127.0.0.1:5174/`. Mantenga la terminal abierta. No abra `index.html` con doble clic. Si el puerto está ocupado, Vite indicará otra dirección.
 
+En Windows también puede hacer doble clic en `iniciar.cmd` dentro de `explorer-react`. El acceso instala las dependencias si no están presentes y ejecuta el servidor. Abra la dirección «Local» que aparezca en esa ventana.
+
 ```bash
 npm test          # Comprueba tarjetas, filtros, callbacks y menú
 npm run build    # Verifica TypeScript y genera dist/
@@ -106,6 +108,12 @@ No se realizan peticiones `fetch`: los datos se importan directamente desde el m
 - Fecha indicada en la actividad: **4 de noviembre de 2026**.
 - En Canvas debe compartir el repositorio y un **video de 3 a 5 minutos** que demuestre escritorio, móvil, filtros combinados, apertura y cierre del menú, y el flujo de estado y callbacks.
 
-El guion está en `docs/guion-video.md`. El guion sirve como apoyo: **no sustituye el video que debe grabar y entregar**.
+Para preparar la evidencia y la entrega, utilice estos documentos:
+
+- [Preparar la grabación](./docs/preparar-grabacion.md): ventanas, acciones y archivos que debe mostrar.
+- [Guion del video](./docs/guion-video.md): orden de demostración y texto de apoyo para unos 4 minutos.
+- [Entrega en Canvas](./docs/entrega-canvas.md): enlaces para copiar y lista final de comprobación.
+
+El guion sirve como apoyo: **no sustituye el video que debe grabar y entregar**.
 
 La entrega Vanilla TypeScript permanece en la raíz del repositorio y en su etiqueta `vanilla-typescript-v1.0.0`. Para este parcial debe ejecutar y mostrar la carpeta `explorer-react`.
