@@ -1,10 +1,25 @@
-export type Region = 'Africa' | 'Americas' | 'Asia' | 'Europe' | 'Oceania';
+export interface CountryNames {
+  common: string;
+}
+
+export interface CountryCodes {
+  alpha_2: string;
+}
+
+export interface CountryFlag {
+  url_svg: string;
+  description: string;
+}
+
+export interface CountryCapital {
+  name: string;
+}
 
 export interface Country {
-  code: string;
-  name: string;
-  flag: string;
-  population: number | null;
-  region: Region;
-  capital: string | null;
+  names: CountryNames;
+  codes: CountryCodes;
+  flag: CountryFlag;
+  population: number;
+  region: string;
+  capitals: CountryCapital[];
 }

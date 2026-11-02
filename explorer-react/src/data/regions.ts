@@ -1,6 +1,4 @@
-import type { Region } from '../types/country';
-
-export const regionLabels: Record<Region, string> = {
+export const regionLabels: Readonly<Record<string, string>> = {
   Africa: 'África',
   Americas: 'América',
   Asia: 'Asia',

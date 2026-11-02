@@ -1,6 +1,8 @@
+import type { ReactNode } from 'react';
+
 interface CountryFactProps {
   label: string;
-  value: string;
+  value: ReactNode;
 }
 
 export function CountryFact({ label, value }: CountryFactProps) {

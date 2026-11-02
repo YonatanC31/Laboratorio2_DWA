@@ -1,33 +1,33 @@
-# Explorer App con React
+# Explorer App con React — Yonatan Chicas
 
-Aplicación de países desarrollada con React, TypeScript y Vite. La interfaz está organizada con Atomic Design y permite combinar la búsqueda por nombre y el filtro por región. Incluye navegación de escritorio, menú móvil controlado por estado y un mensaje cuando no hay coincidencias.
+Proyecto de S24–S27 desarrollado con **React 18, TypeScript, Vite, Tailwind CSS v4 y pnpm**. La interfaz sigue Atomic Design y utiliza los tres registros de demostración del material de clase: **El Salvador, Japan y Canada**.
+
+Incluye búsqueda inmediata por nombre, filtro por región combinado, mensaje sin coincidencias, limpieza de controles y navegación adaptable. El estado compartido permanece en `App.tsx`. No utiliza una API ni React Router en este parcial.
 
 ## Instalación y ejecución
 
-Requisitos: Git, npm 10 o superior y Node.js 22.12 o una versión compatible de las ramas 24 o 26. La versión de referencia está en `.nvmrc`.
+Requisitos: Node.js 22.12 o una versión compatible de las ramas 24 o 26, pnpm y Git. La referencia de Node está en `.nvmrc`; `package.json` indica `pnpm@11.25.0` y `pnpm-lock.yaml` fija las dependencias.
 
-Desde el repositorio que contiene ambos proyectos:
-
-```bash
-git clone https://github.com/YonatanC31/Laboratorio2_DWA.git
-cd Laboratorio2_DWA/explorer-react
-npm ci
-npm run dev
-```
-
-Si descargó el ZIP, extráigalo y abra una terminal en la carpeta `explorer-react`, donde está su `package.json`. Ejecute los comandos a partir de `npm ci`.
-
-Abra la dirección que muestre Vite, normalmente `http://127.0.0.1:5174/`. Mantenga la terminal abierta. No abra `index.html` con doble clic. Si el puerto está ocupado, Vite indicará otra dirección.
-
-En Windows también puede hacer doble clic en `iniciar.cmd` dentro de `explorer-react`. El acceso instala las dependencias si no están presentes y ejecuta el servidor. Abra la dirección «Local» que aparezca en esa ventana.
+Abra una terminal en la carpeta independiente `explorer-react`, donde está su `package.json`:
 
 ```bash
-npm test          # Comprueba tarjetas, filtros, callbacks y menú
-npm run build    # Verifica TypeScript y genera dist/
-npm run preview  # Sirve la compilación; normalmente en el puerto 4174
+node -v
+pnpm -v
+pnpm install --frozen-lockfile
+pnpm run dev
 ```
 
-La instalación utiliza `package-lock.json`. No se requieren claves, variables de entorno, conexión a una API ni React Router. El archivo `.gitignore` excluye `node_modules`, `dist` y los archivos de entorno.
+Abra la dirección que muestre Vite, normalmente `http://127.0.0.1:5174/`, y mantenga la terminal abierta. No abra `index.html` con doble clic. Si el puerto está ocupado, Vite indicará otro. En Windows también puede utilizar `iniciar.cmd`; instala las dependencias si faltan y ejecuta `pnpm run dev`.
+
+```bash
+pnpm list react react-dom @types/react @types/react-dom
+pnpm run lint
+pnpm test
+pnpm run build
+pnpm run preview
+```
+
+`build` comprueba TypeScript y genera `dist/`. `lint` utiliza Oxlint. `preview` permite revisar la compilación, normalmente en `http://127.0.0.1:4174/`. El archivo `.gitignore` excluye `node_modules`, `dist`, el almacén de pnpm, las variables de entorno y los archivos de registro.
 
 ## Atomic Design
 
@@ -35,85 +35,105 @@ La instalación utiliza `package-lock.json`. No se requieren claves, variables d
 src/
   components/
     atoms/
-      Button.tsx         Botón reutilizable y sus variantes.
-      Input.tsx          Campo de texto controlado.
-      Select.tsx         Selector controlado con opciones tipadas.
+      Badge.tsx          Presenta la región recibida.
+      Flag.tsx           Presenta la bandera y su respaldo.
+      Button.tsx         Botones reutilizables.
       Icon.tsx           Iconos de la interfaz.
-      Flag.tsx           Bandera y mensaje si la imagen falla.
-      CountryFact.tsx    Etiqueta y valor de un dato del país.
+      CountryFact.tsx    Etiqueta y valor de un dato.
     molecules/
-      SearchField.tsx    Etiqueta, icono y campo de búsqueda.
-      RegionField.tsx    Etiqueta y selector de región.
-      CountryCard.tsx    Bandera, nombre y datos de un país.
-      Navigation.tsx     Enlaces de navegación.
-      EmptyState.tsx     Mensaje sin resultados y botón para restablecer.
+      CountryCard.tsx    Compone Flag, Badge y los datos del país.
+      SearchBar.tsx      Búsqueda controlada con onQueryChange.
+      RegionFilter.tsx   Región controlada con onRegionChange.
+      Navigation.tsx     Enlaces del menú.
+      EmptyState.tsx     Mensaje y acción para restablecer filtros.
     organisms/
-      Header.tsx         Marca, navegación y control del menú móvil.
-      FilterBar.tsx      Controles de búsqueda y región.
-      CountryGrid.tsx    Composición del listado de tarjetas.
-  data/                  Muestra de países y opciones de regiones.
-  types/                 Tipos e interfaces de datos.
-  utils/                 Funciones de búsqueda y formato.
-  App.tsx                Componente padre y estado compartido.
-  main.tsx               Punto de entrada de React.
-  styles.css             Estilos y distribución adaptable.
-public/flags/            Banderas locales.
-docs/guion-video.md      Guion de demostración de 4 minutos.
+      Header.tsx         Título, children, navegación y controles.
+      CountryGrid.tsx    Listado de tarjetas generado con map().
+  data/countries-demo.ts Los tres registros locales de clase.
+  data/regions.ts        Valores exactos y nombres visibles del selector.
+  types/country.ts      Interfaces del contrato de países.
+  utils/filter.ts       Búsqueda y región combinadas.
+  utils/format.ts       Formato de población y capital.
+  App.tsx               Estado compartido y callbacks del padre.
+  main.tsx              Montaje de React e import de index.css.
+  index.css             Tailwind v4, tokens y estilos adaptables.
 ```
 
-Los componentes declaran interfaces para sus props. Por ejemplo, `CountryCard` recibe un objeto `Country`; `SearchField` recibe el texto actual y una función `onSearchChange`.
+### CountryGrid y CountryCard
 
-## Estado y comunicación
+`CountryGrid` recibe `countries: Country[]` y `onSelect: (code: string) => void`. Recorre el arreglo con `map()`, entrega cada objeto a `CountryCard` mediante `country` y transmite el mismo callback `onSelect`. Utiliza `country.codes.alpha_2` como `key` estable y única.
 
-`App.tsx` mantiene el estado compartido mediante tres llamadas a `useState`:
+`CountryCard` declara una interfaz de props y compone `Flag`, `Badge`, nombre, población y capital. El botón «Ver más» llama a `onSelect(country.codes.alpha_2)`. En esta etapa `handleSelect`, definido en `App`, muestra `SV`, `JP` o `CA` en la consola; no navega a una página de detalle.
 
-- `search`: texto de búsqueda.
-- `region`: región seleccionada.
-- `isMenuOpen`: apertura del menú móvil.
+Al añadir otro objeto con un código único al arreglo recibido por `CountryGrid`, aparece otra tarjeta sin modificar el componente.
 
-Los valores bajan a los componentes hijos mediante props. Los hijos solicitan cambios llamando a los callbacks recibidos:
+## Estado, children y controles de S27
+
+`App.tsx` conserva `query`, `region` e `isMenuOpen` mediante `useState`. Los resultados y su cantidad se calculan a partir de los registros originales; no se guarda otra copia del arreglo filtrado en estado.
 
 ```text
-Input → SearchField → FilterBar → setSearch en App
-Select → RegionField → FilterBar → setRegion en App
-Button → Header → onMenuToggle → setIsMenuOpen en App
+App (query y setQuery)
+  → Header (query y onQueryChange)
+    → SearchBar (value={query} y onChange tipado)
+      → onQueryChange(texto) → setQuery en App
+
+App (region y setRegion)
+  → Header (region y onRegionChange)
+    → RegionFilter (value={region} y onChange tipado)
+      → onRegionChange(valor) → setRegion en App
 ```
 
-El listado se deriva de los datos y de los filtros en cada renderizado; no se guarda una segunda copia de los resultados en estado. La búsqueda se actualiza al escribir y se combina con la región seleccionada. Borrar el texto conserva la región y elegir «Todas las regiones» conserva el texto.
+`Header` recibe un título y `children: ReactNode`. App coloca entre `<Header>...</Header>` el párrafo «Consulte sus datos y encuentre países por nombre o región». Header lo muestra y transmite los valores y callbacks a los controles. No guarda una copia local de los filtros.
 
-`Flag` utiliza únicamente estado local para mostrar el texto alternativo si una imagen falla; no administra los filtros ni el menú.
+El menú sigue el mismo principio: `Header` recibe `isMenuOpen`, `onMenuToggle` y `onMenuClose`; el estado permanece en App. Puede cerrarse con su botón, al seleccionar un enlace o con Escape desde la navegación.
 
-## Datos de demostración
+La búsqueda es inmediata, no distingue mayúsculas ni espacios exteriores y siempre se combina con la región. Borrar el texto conserva la región; elegir «Todas las regiones» conserva el texto. «Limpiar filtros» y «Restablecer filtros» reinician ambos valores.
 
-Se incluye una muestra local de 8 países en `src/data/countries.ts`: El Salvador, México, Brasil, España, Alemania, Japón, Sudáfrica y Australia. Los valores son datos de demostración adaptados de REST Countries; no son estimaciones en tiempo real. Las imágenes están incluidas en `public/flags/` y la licencia de los datos se conserva en `public/data/LICENSE.txt`.
+## Datos de clase
 
-**Esta muestra no ha podido contrastarse con el archivo utilizado en S24–S27, que no fue proporcionado.** Si la docente exige ese conjunto exacto, sustituya el contenido de `demoCountries` por los registros de clase respetando la interfaz `Country`, e incluya las banderas correspondientes. No es necesario modificar los componentes ni los callbacks.
+Los objetos `elSalvador`, `japon` y `canada`, y el arreglo `countriesDemo`, siguen el [repositorio de referencia facilitado en el material](https://github.com/Kcruz080492/explorer-react/blob/main/src/data/countries-demo.ts). Se mantienen los nombres en inglés, los códigos `SV`, `JP`, `CA`, las poblaciones y las capitales de esa muestra. Por eso debe buscar `Japan` para encontrar el registro japonés.
 
-No se realizan peticiones `fetch`: los datos se importan directamente desde el módulo TypeScript. Tras instalar las dependencias, la aplicación puede usarse sin servicios externos.
+La interfaz conserva `names.common`, `codes.alpha_2`, `flag.url_svg`, `population`, `region` y `capitals`. Las banderas se incluyen en `public/flags/` y solo sus rutas se adaptan para servirlas localmente. La licencia de los datos se conserva en `public/data/LICENSE.txt`. No se realiza ninguna petición `fetch` ni se requiere una clave.
 
-## Comprobación manual
+## Verificación de S25–S27
 
-1. **Escritorio:** utilice una ventana de al menos 1120 px. Se muestran cuatro tarjetas por fila y la navegación de escritorio.
-2. **Móvil:** reduzca el ancho a 390 px. Se muestra una tarjeta por fila y el botón «Abrir menú».
-3. **Menú:** abra y cierre el menú con su botón. También puede cerrarlo al elegir un enlace o al pulsar Escape desde la navegación.
-4. **Búsqueda:** escriba `japon`. Debe mostrarse Japón inmediatamente; se ignoran mayúsculas, espacios exteriores y acentos.
-5. **Filtro combinado:** con `japon` escrito, seleccione Europa. Debe aparecer «No se encontraron países». Seleccione Asia para recuperar la tarjeta.
-6. **Conservación de filtros:** borre el texto y compruebe que Asia sigue seleccionada. Elegir «Todas las regiones» debe conservar lo que haya escrito.
-7. **Limpieza:** pulse «Limpiar filtros» o «Restablecer filtros» para recuperar todos los países.
+| Búsqueda | Región | Resultado esperado |
+| --- | --- | --- |
+| Vacía | Todas | El Salvador, Japan y Canada: 3 países. |
+| `SAL` | Todas | El Salvador: 1 país. |
+| Vacía | América (`Americas`) | El Salvador y Canada: 2 países. |
+| Vacía | Asia | Japan: 1 país. |
+| `can` | América | Canada: 1 país. |
+| `can` | Asia | Mensaje sin coincidencias: 0 países. |
+| Vacía | Europa | Mensaje sin coincidencias: 0 países. |
+| Limpiar filtros | Todas | Se recuperan los 3 países. |
 
-## Entrega
+Compruebe también «Ver más» en la consola, la navegación con teclado y el menú móvil. El grid tiene cuatro columnas desde 1120 px y una en móvil; con los tres registros de clase queda una posición libre en escritorio. No se añade un cuarto país ajeno a la muestra. El modo oscuro responde automáticamente a la preferencia del sistema, sin interruptor adicional.
 
-- [Repositorio](https://github.com/YonatanC31/Laboratorio2_DWA).
-- [Carpeta del proyecto React](https://github.com/YonatanC31/Laboratorio2_DWA/tree/main/explorer-react).
-- Fecha indicada en la actividad: **4 de noviembre de 2026**.
-- En Canvas debe compartir el repositorio y un **video de 3 a 5 minutos** que demuestre escritorio, móvil, filtros combinados, apertura y cierre del menú, y el flujo de estado y callbacks.
+Las pruebas verifican esos casos, el flujo de callbacks, `children`, los códigos de selección y la reutilización del grid al añadir otro país. Ejecute `pnpm run lint`, `pnpm test` y `pnpm run build` antes de guardar cambios; revise después `git diff` y utilice Conventional Commits.
 
-Para preparar la evidencia y la entrega, utilice estos documentos:
+## Capturas reales
 
-- [Preparar la grabación](./docs/preparar-grabacion.md): ventanas, acciones y archivos que debe mostrar.
-- [Guion del video](./docs/guion-video.md): orden de demostración y texto de apoyo para unos 4 minutos.
-- [Entrega en Canvas](./docs/entrega-canvas.md): enlaces para copiar y lista final de comprobación.
+Vista de escritorio, con el modo oscuro automático activo:
 
-El guion sirve como apoyo: **no sustituye el video que debe grabar y entregar**.
+![Vista de escritorio](./docs/capturas/escritorio.jpg)
 
-La entrega Vanilla TypeScript permanece en la raíz del repositorio y en su etiqueta `vanilla-typescript-v1.0.0`. Para este parcial debe ejecutar y mostrar la carpeta `explorer-react`.
+- [Vista móvil](./docs/capturas/movil.jpg).
+- [Menú móvil abierto](./docs/capturas/menu-movil.jpg).
+- [Filtro `can` combinado con América](./docs/capturas/filtro-canada.jpg).
+- [Sin coincidencias con `can` y Asia](./docs/capturas/sin-resultados.jpg).
+
+## Preparación del video y entrega
+
+- [Preparar la grabación](./docs/preparar-grabacion.md).
+- [Guion de 3 a 5 minutos](./docs/guion-video.md).
+- [Respuestas de apoyo de S24–S27](./docs/respuestas-s24-s27.md).
+- [Lista de entrega en Canvas](./docs/entrega-canvas.md).
+
+La fecha indicada en la actividad es el **4 de noviembre de 2026**. Debe entregar el enlace de su repositorio y un video de 3 a 5 minutos con escritorio, móvil, filtros combinados, menú, estado y callbacks. El guion y las capturas no sustituyen ese video.
+
+## Publicación independiente
+
+La carpeta local de este proyecto se llama `explorer-react` y está fuera de la carpeta de Vanilla TypeScript, como indica S24. El repositorio público independiente debe crearse con ese mismo nombre. Su creación sigue pendiente; la conexión de publicación permite trabajar con repositorios existentes.
+
+Mientras se completa ese paso, la copia del avance permanece en [Laboratorio2_DWA/explorer-react](https://github.com/YonatanC31/Laboratorio2_DWA/tree/main/explorer-react). La entrega Vanilla se conserva por separado en su etiqueta `vanilla-typescript-v1.0.0`.
