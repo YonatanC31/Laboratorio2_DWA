@@ -69,14 +69,33 @@ Para cambiar la fuente, copie `.env.example` a `.env.local`, defina `VITE_COUNTR
 
 - Repositorio: [YonatanC31/Laboratorio2_DWA](https://github.com/YonatanC31/Laboratorio2_DWA).
 - Rama principal con el proyecto completo: [`main`](https://github.com/YonatanC31/Laboratorio2_DWA/tree/main).
-- Versión fija de entrega: [`vanilla-typescript-v1.0.0`](https://github.com/YonatanC31/Laboratorio2_DWA/tree/vanilla-typescript-v1.0.0).
+- Versión revisada con esta rúbrica: [`vanilla-typescript-v1.1.0`](https://github.com/YonatanC31/Laboratorio2_DWA/tree/vanilla-typescript-v1.1.0).
+- Versión anterior conservada: [`vanilla-typescript-v1.0.0`](https://github.com/YonatanC31/Laboratorio2_DWA/tree/vanilla-typescript-v1.0.0).
 
 Los cambios nuevos siguen Conventional Commits: `feat:`, `fix:`, `refactor:` y `docs:`. La etiqueta conserva exactamente la versión Vanilla TypeScript de esta actividad, aunque `main` cambie después.
 
 Para ejecutar la versión fija después de clonar el repositorio:
 
 ```bash
-git switch --detach vanilla-typescript-v1.0.0
+git switch --detach vanilla-typescript-v1.1.0
 npm ci
 npm run dev
 ```
+
+## Verificación de la rúbrica Vanilla TypeScript
+
+| Criterio | Implementación y comprobación |
+| --- | --- |
+| Interfaz `Country` | `src/types/country.ts` distingue los campos requeridos, opcionales y `null`. No utiliza `any`. `parseCountries` valida el JSON recibido como `unknown`. |
+| Petición tipada | `src/api/countries.ts` obtiene el archivo con `fetch` y declara el retorno `Promise<Country[]>`. |
+| Errores técnicos | Comprueba `response.ok`; controla errores HTTP, de red, de lectura y de formato JSON, y cancela las peticiones que superan 15 segundos. |
+| Tarjetas | `src/render/countries.ts` muestra nombre, bandera, población, región y capital. Contempla campos ausentes, cadenas vacías, población cero y banderas que no cargan. El listado se adapta a móvil y escritorio. |
+| Responsabilidades | `api`, `types`, `utils` y `render` contienen sus tareas correspondientes; `main.ts` coordina la carga y los eventos mediante imports y exports. |
+| Filtros combinados | La búsqueda por nombre y la región se aplican juntas sobre todos los datos, antes de paginar. La búsqueda ignora mayúsculas y acentos; modificar un control conserva el otro. |
+| Debounce | La búsqueda espera 300 ms desde la última pulsación y cancela el temporizador anterior. Cambiar la región cancela cualquier búsqueda pendiente y actualiza inmediatamente. |
+| Estados | La carga, el vacío y el error tienen presentaciones distintas. Al reintentar se retira el error, se muestra la carga y después se presentan los resultados o el vacío. |
+| Repositorio y documentación | El repositorio es público y la etiqueta `vanilla-typescript-v1.1.0` identifica esta revisión. Este README contiene ejecución, carpetas, fuente de datos y configuración. |
+
+Ejecute `npm test` para comprobar los casos anteriores: **33 pruebas** de validación, petición, filtros, debounce, tarjetas, estados y paginación. `vitest.config.ts` limita la ejecución a `tests/`, que corresponde a Vanilla; la copia de React conserva sus pruebas independientes. Después ejecute `npm run build` para comprobar TypeScript y generar la aplicación de producción.
+
+Para entregar esta revisión, comparta el enlace del repositorio y el enlace directo a la etiqueta `vanilla-typescript-v1.1.0`.

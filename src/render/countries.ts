@@ -12,9 +12,10 @@ function fact(label: string, value: string): HTMLElement {
 }
 
 function safeImageUrl(value: string | null | undefined): string | null {
-  if (!value) return null;
+  const source = value?.trim();
+  if (!source) return null;
   try {
-    const url = new URL(value, location.href);
+    const url = new URL(source, location.href);
     return ['https:', 'http:'].includes(url.protocol) ? url.href : null;
   } catch { return null; }
 }

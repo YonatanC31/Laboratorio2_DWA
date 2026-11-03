@@ -4,7 +4,7 @@ import { fetchCountries, parseCountries } from '../src/api/countries';
 import type { Country } from '../src/types/country';
 import { debounce } from '../src/utils/debounce';
 import { filterCountries, sortCountries } from '../src/utils/filter';
-import { formatPopulation } from '../src/utils/format';
+import { formatPopulation, regionName } from '../src/utils/format';
 
 const sample: Country[] = [
   { name: { common: 'Japan' }, translations: { spa: { common: 'Japón' } }, cca3: 'JPN', population: 125836021, region: 'Asia', capital: ['Tokyo'] },
@@ -34,6 +34,30 @@ describe('validación y petición', () => {
       expect(() => parseCountries(data)).toThrow('formato');
     }
   });
+  it('acepta todos los campos opcionales omitidos o nulos sin perder el nombre y el código', () => {
+    const required = { name: { common: 'Prueba' }, cca3: 'TST' };
+    const nullable = {
+      ...required,
+      name: { common: 'Prueba', official: null },
+      population: null,
+      region: null,
+      capital: null,
+      flags: { svg: null, png: null, alt: null },
+      translations: { spa: null },
+    };
+    expect(parseCountries([required, nullable])).toEqual([required, nullable]);
+    expect(parseCountries([{ ...required, translations: null }])).toHaveLength(1);
+    expect(parseCountries([{ ...required, translations: { spa: { common: 'Prueba', official: null } } }])).toHaveLength(1);
+    for (const data of [
+      [{ cca3: 'TST' }],
+      [{ ...required, name: { common: ' ' } }],
+      [{ ...required, cca3: null }],
+      [{ ...required, population: -1 }],
+      [{ ...required, region: 5 }],
+    ]) {
+      expect(() => parseCountries(data)).toThrow('formato');
+    }
+  });
   it('devuelve países con retorno tipado', async () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response(JSON.stringify(sample))));
     expect(await fetchCountries('/countries.json')).toEqual(sample);
@@ -47,6 +71,17 @@ describe('validación y petición', () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce(new Response('<html>')).mockRejectedValueOnce(new TypeError('Network error')));
     await expect(fetchCountries()).rejects.toThrow('JSON válido');
     await expect(fetchCountries()).rejects.toThrow('conexión');
+  });
+  it('propaga de forma controlada errores de lectura y respuestas con estructura inválida', async () => {
+    const unreadable = new Response('[]');
+    vi.spyOn(unreadable, 'json').mockRejectedValue(new Error('No se pudo leer la respuesta'));
+    vi.stubGlobal('fetch', vi.fn()
+      .mockResolvedValueOnce(unreadable)
+      .mockResolvedValueOnce(new Response('{"countries":[]}'))
+      .mockRejectedValueOnce('fallo inesperado'));
+    await expect(fetchCountries()).rejects.toThrow('No se pudo leer la respuesta');
+    await expect(fetchCountries()).rejects.toThrow('formato');
+    await expect(fetchCountries()).rejects.toThrow('Ocurrió un error al obtener los países');
   });
   it('interrumpe una petición que supera los 15 segundos', async () => {
     vi.useFakeTimers();
@@ -74,6 +109,9 @@ describe('filtros y formato', () => {
     expect(formatPopulation(0)).toBe('0');
     expect(formatPopulation(null)).toBe('No disponible');
     expect(formatPopulation(undefined)).toBe('No disponible');
+    expect(regionName(null)).toBe('No disponible');
+    expect(regionName('  ')).toBe('No disponible');
+    expect(regionName(' Asia ')).toBe('Asia');
   });
 });
 

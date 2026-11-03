@@ -13,7 +13,8 @@ export function formatPopulation(population: number | null | undefined): string 
 }
 
 export function regionName(region: string | null | undefined): string {
-  return region ? (regionNames[region] ?? region) : 'No disponible';
+  const value = region?.trim();
+  return value ? (regionNames[value] ?? value) : 'No disponible';
 }
 
 export function normalizeText(text: string): string {
